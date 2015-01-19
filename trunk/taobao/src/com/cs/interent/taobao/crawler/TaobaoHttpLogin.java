@@ -154,7 +154,7 @@ public class TaobaoHttpLogin {
 			HttpEntity entity = httpresponse.getEntity();
 			InputStream content = entity.getContent();
 			byte[] b = IOUtils.toByteArray(content);
-			FileUtils.writeByteArrayToFile(new File("d://1.jpeg"), b);
+			FileUtils.writeByteArrayToFile(new File("codes//code.jpeg"), b);
 			EntityUtils.consume(entity);
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
