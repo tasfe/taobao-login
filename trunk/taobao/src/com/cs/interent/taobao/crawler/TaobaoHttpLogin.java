@@ -164,35 +164,39 @@ public class TaobaoHttpLogin {
 	}
 	
 	public static void main(String[] args) throws ClientProtocolException, IOException {
-		String codeUrl = getCodeUrl();
-		Scanner sc = new Scanner(System.in);
-		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		if(codeUrl != null && !codeUrl.equals("")){
-			handleVilidateCode(codeUrl);
-			System.out.println("请输入验证码：");
-			String TPL_checkcode = sc.next();
-			params.add(new BasicNameValuePair("TPL_checkcode", TPL_checkcode)); 
-		}
-		
-		
-		CloseableHttpClient httpClient = createSSLClientDefault(true);
-		HttpPost httpPost = new HttpPost("https://login.taobao.com/member/login.jhtml");
-		headerWrapper(httpPost);
-		httpPost.setHeader("accept-Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-		
-		params.add(new BasicNameValuePair("TPL_password", TPL_password));  
-		params.add(new BasicNameValuePair("TPL_username", TPL_username));
-		params.add(new BasicNameValuePair("newlogin", "1"));   
-		params.add(new BasicNameValuePair("callback", "1"));  
-		httpPost.setEntity(new UrlEncodedFormEntity(params,"UTF-8"));  
-		// 发送请求  
-		HttpResponse httpresponse = httpClient.execute(httpPost);  
-		HttpEntity entity = httpresponse.getEntity();  
-		String body = EntityUtils.toString(entity);  
-		System.out.println(body);  
-		String sessionid = body.substring(body.indexOf("token")+8, body.length()-3);
-		System.out.println(sessionid);
-		
+		String sessionid = null;
+		CloseableHttpClient httpClient = null;
+		do {
+			String codeUrl = getCodeUrl();
+			Scanner sc = new Scanner(System.in);
+			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			if(codeUrl != null && !codeUrl.equals("")){
+				handleVilidateCode(codeUrl);
+				System.out.println("请输入验证码：");
+				String TPL_checkcode = sc.next();
+				params.add(new BasicNameValuePair("TPL_checkcode", TPL_checkcode)); 
+			}
+			
+			
+			httpClient = createSSLClientDefault(true);
+			HttpPost httpPost = new HttpPost("https://login.taobao.com/member/login.jhtml");
+			headerWrapper(httpPost);
+			httpPost.setHeader("accept-Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+			
+			params.add(new BasicNameValuePair("TPL_password", TPL_password));  
+			params.add(new BasicNameValuePair("TPL_username", TPL_username));
+			params.add(new BasicNameValuePair("newlogin", "1"));   
+			params.add(new BasicNameValuePair("callback", "1"));  
+			httpPost.setEntity(new UrlEncodedFormEntity(params,"UTF-8"));  
+			// 发送请求  
+			HttpResponse httpresponse = httpClient.execute(httpPost);  
+			HttpEntity entity = httpresponse.getEntity();  
+			String body = EntityUtils.toString(entity);  
+			System.out.println(body);  
+			sessionid = body.substring(body.indexOf("token")+8, body.length()-3);
+			System.out.println(sessionid);
+			sc.close();
+		} while (sessionid.startsWith("{"));
 		
 		HttpGet hg1 = new HttpGet("https://passport.alipay.com/mini_apply_st.js?site=0&token="+sessionid+"&callback=vstCallback65");
 		headerWrapper(hg1);
@@ -224,7 +228,7 @@ public class TaobaoHttpLogin {
 		HttpEntity entity2 = httpresponse2.getEntity();  
 		String body2 = EntityUtils.toString(entity2);  
 		System.out.println(body2);  
-		sc.close();
+		
 		
 		
 		

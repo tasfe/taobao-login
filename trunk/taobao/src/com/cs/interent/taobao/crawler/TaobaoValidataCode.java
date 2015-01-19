@@ -76,8 +76,9 @@ public class TaobaoValidataCode {
 			e.printStackTrace();
 		}
 	}
-
+	/*
 	public static void main(String[] args) {
 		handleVilidateCode("https://pin.aliyun.com/get_img?sessionid=79f17a12babd6a507d1fcd11fc177c86&identity=taobao.login&type=150_40");
 	}
+	*/
 }
