@@ -231,19 +231,18 @@ public class TaobaoHttpLogin {
 		
 		
 		
-		
 		CloseableHttpClient commonClient = HttpClients.custom().setDefaultCookieStore(sslcookies).build();
 		//http://mofang.taobao.com/s/login
 		//http://mofang.taobao.com/s/app/basic
-		//HttpGet hg3 = new HttpGet("http://mofang.taobao.com/s/login");
-		//headerWrapper(hg3);
-		//HttpResponse httpresponse3 = commonClient.execute(hg3);  
-		//HttpEntity entity3 = httpresponse3.getEntity();  
-		//String body3 = EntityUtils.toString(entity3);  
-		//System.out.println(body3);  
+		HttpGet hg3 = new HttpGet("https://login.taobao.com/member/login.jhtml?redirectURL=http%3A%2F%2Fmofang.taobao.com%2Fs%2Flogin");
+		headerWrapper(hg3);
+		HttpResponse httpresponse3 = commonClient.execute(hg3);  
+		HttpEntity entity3 = httpresponse3.getEntity();  
+		String body3 = EntityUtils.toString(entity3);  
+		System.out.println(body3);  
 		
 		
-		HttpGet hg4 = new HttpGet("http://trade.taobao.com/trade/itemlist/list_bought_items.htm?spm=1.7274553.1997525045.2.C6QtVd");
+		HttpGet hg4 = new HttpGet("http://shu.taobao.com/top/16/market?spm=0.0.0.0.yYSQn6");
 		headerWrapper(hg4);
 		HttpResponse httpresponse4 = commonClient.execute(hg4);  
 		HttpEntity entity4 = httpresponse4.getEntity();  
