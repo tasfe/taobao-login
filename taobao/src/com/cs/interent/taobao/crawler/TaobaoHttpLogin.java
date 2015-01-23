@@ -77,10 +77,10 @@ public class TaobaoHttpLogin {
 
 	public static void headerWrapper(AbstractHttpMessage methord){
 		methord.setHeader("user-agent",
-				"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:30.0) Gecko/20100101 Firefox/30.0");
+				"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36");
 		methord.setHeader("accept", "*/*");
 		methord.setHeader("accept-language", "zh-CN");
-		methord.setHeader("Accept-Encoding", "gzip, deflate");
+		methord.setHeader("Accept-Encoding", "gzip, deflate, sdch");
 		
 	}
 	
@@ -198,14 +198,16 @@ public class TaobaoHttpLogin {
 			sc.close();
 		} while (sessionid.startsWith("{"));
 		
-		HttpGet hg1 = new HttpGet("https://passport.alipay.com/mini_apply_st.js?site=0&token="+sessionid+"&callback=vstCallback65");
+		//HttpGet hg1 = new HttpGet("https://passport.alipay.com/mini_apply_st.js?site=0&token="+sessionid+"&callback=vstCallback65");
+		HttpGet hg1 = new HttpGet("https://passport.alipay.com/mini_apply_st.js?site=0&token="+sessionid+"&callback=stCallback6");
 		headerWrapper(hg1);
 		HttpResponse httpresponse1 = httpClient.execute(hg1);  
 		HttpEntity entity1 = httpresponse1.getEntity();  
 		String body1 = EntityUtils.toString(entity1);
-		
+		System.out.println(body1);
 		String st = "";
-		String regex = "vstCallback65\\((.*)\\)";
+		//String regex = "vstCallback65\\((.*)\\)";
+		String regex = "stCallback6\\((.*)\\)";
 		Pattern compile = Pattern.compile(regex);
 		Matcher m = compile.matcher(body1);
 		while(m.find()){
@@ -219,10 +221,11 @@ public class TaobaoHttpLogin {
 				e.printStackTrace();
 			}
 		}
-		//System.out.println(body1);  
+		System.out.println(body1);  
 		
-		
-		HttpGet hg2 = new HttpGet("https://login.taobao.com/member/vst.htm?st="+st+"&params=style%3Dminisimple%26sub%3Dtrue%26TPL_username%3D"+TPL_username+"%26loginsite%3D0%26from_encoding%3D%26not_duplite_str%3D%26guf%3D%26full_redirect%3D%26isIgnore%3D%26need_sign%3D%26sign%3D%26from%3Ddatacube%26TPL_redirect_url%3Dhttp%25253A%25252F%25252Fmofang.taobao.com%25252Fs%25252Flogin%26css_style%3D%26allp%3D&_ksTS=1404787873165_78&callback=jsonp79");
+		//System.out.println("https://login.taobao.com/member/vst.htm?st="+st+"&params=style%3Dminisimple%26sub%3Dtrue%26TPL_username%3D"+TPL_username+"%26loginsite%3D0%26from_encoding%3D%26not_duplite_str%3D%26guf%3D%26full_redirect%3D%26isIgnore%3D%26need_sign%3D%26sign%3D%26from%3Dtaobaoindex%26TPL_redirect_url%3Dhttp%3A%2F%2Fshu.taobao.com%2Flogin%2Fcallback%26css_style%3D%26allp%3D&_ksTS=1404787873165_78&callback=jsonp79");
+		HttpGet hg2 = new HttpGet("https://login.taobao.com/member/vst.htm?st="+st+"&params=style%3Dminisimple%26sub%3Dtrue%26TPL_username%3D"+TPL_username+"%26loginsite%3D0%26from_encoding%3D%26not_duplite_str%3D%26guf%3D%26full_redirect%3D%26isIgnore%3D%26need_sign%3D%26sign%3D%26from%3Dtaobaoindex%26TPL_redirect_url%3Dhttp%3A%2F%2Fshu.taobao.com%2Flogin%2Fcallback%26css_style%3D%26allp%3D&_ksTS=1404787873165_78&callback=jsonp79");
+		//HttpGet hg2 = new HttpGet("https://login.taobao.com/member/vst.htm?st="+st+"&params=style%3Dminisimple%26sub%3Dtrue%26TPL_username%3D"+TPL_username+"%26loginsite%3D0%26from_encoding%3D%26not_duplite_str%3D%26guf%3D%26full_redirect%3D%26isIgnore%3D%26need_sign%3D%26sign%3D%26from%3Ddatacube%26TPL_redirect_url%3Dhttp%25253A%25252F%25252Fmofang.taobao.com%25252Fs%25252Flogin%26css_style%3D%26allp%3D&_ksTS=1404787873165_78&callback=jsonp79");
 		headerWrapper(hg2);
 		HttpResponse httpresponse2 = httpClient.execute(hg2);  
 		HttpEntity entity2 = httpresponse2.getEntity();  
@@ -232,22 +235,32 @@ public class TaobaoHttpLogin {
 		
 		
 		CloseableHttpClient commonClient = HttpClients.custom().setDefaultCookieStore(sslcookies).build();
+		
 		//http://mofang.taobao.com/s/login
 		//http://mofang.taobao.com/s/app/basic
+		/*
 		HttpGet hg3 = new HttpGet("https://login.taobao.com/member/login.jhtml?redirectURL=http%3A%2F%2Fmofang.taobao.com%2Fs%2Flogin");
 		headerWrapper(hg3);
 		HttpResponse httpresponse3 = commonClient.execute(hg3);  
 		HttpEntity entity3 = httpresponse3.getEntity();  
 		String body3 = EntityUtils.toString(entity3);  
 		System.out.println(body3);  
-		
-		
-		HttpGet hg4 = new HttpGet("http://shu.taobao.com/top/16/market?spm=0.0.0.0.yYSQn6");
+		*/
+		/*
+		HttpGet hg4 = new HttpGet("http://shu.taobao.com/top/16/market?spm=0.0.0.0.a7qgVH");
 		headerWrapper(hg4);
 		HttpResponse httpresponse4 = commonClient.execute(hg4);  
 		HttpEntity entity4 = httpresponse4.getEntity();  
 		String body4 = EntityUtils.toString(entity4);  
-		System.out.println(body4);  
+		System.out.println(body4);
+		*/
+		HttpGet hg4 = new HttpGet("http://shu.taobao.com/top/16/market?spm=0.0.0.0.puTdew");
+		headerWrapper(hg4);
+		HttpResponse httpresponse4 = commonClient.execute(hg4);  
+		HttpEntity entity4 = httpresponse4.getEntity();  
+		String body4 = EntityUtils.toString(entity4);  
+		System.out.println(body4); 
+		
 	}
 
 
